@@ -1,9 +1,9 @@
 import PIL
 from PIL import Image
 import matplotlib.pyplot as plt
-from libtiff import TIFF
-from libtiff import TIFFfile, TIFFimage
-from scipy.misc import imresize
+#from libtiff import TIFF
+#from libtiff import TIFFfile, TIFFimage
+#from scipy.misc import imresize
 import numpy as np
 import glob
 import cv2
@@ -80,7 +80,7 @@ def UNet(shape = (None,None,4)):
     # Output layer of the U-Net with a softmax activation
     conv10 = Conv2D(9, 1, activation = 'softmax')(conv9)
 
-    model = Model(input = inputs, output = conv10)
+    model = Model(inputs, conv10) # Model(input = inputs, output = conv10)
 
     model.compile(optimizer = Adam(lr = 0.000001), loss = 'categorical_crossentropy', metrics = ['accuracy', iou])
     

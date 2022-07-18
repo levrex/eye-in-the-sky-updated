@@ -1,9 +1,10 @@
 import PIL
 from PIL import Image
 import matplotlib.pyplot as plt
-from libtiff import TIFF
-from libtiff import TIFFfile, TIFFimage
-from scipy.misc import imresize
+#from libtiff import TIFF
+#from libtiff import TIFFfile, TIFFimage
+#from scipy.misc import imresize
+from tifffile import imread
 import numpy as np
 import glob
 import cv2
@@ -18,7 +19,7 @@ from keras.layers import *
 from keras.optimizers import *
 from keras.callbacks import ModelCheckpoint, LearningRateScheduler
 from keras.preprocessing.image import ImageDataGenerator
-from scipy.misc import imsave
+#from scipy.misc import imsave
 from keras import backend as K
 from iou import iou
 #%matplotlib inline
@@ -51,7 +52,8 @@ def resize(img, stride, n_h, n_w):
     ne_h = (n_h*stride) + stride
     ne_w = (n_w*stride) + stride
     
-    img_resized = imresize(img, (ne_h,ne_w))
+    img_resized = cv2.resize(img, (ne_h,ne_w))
+    #img_resized = imresize(img, (ne_h,ne_w))
     return img_resized
 
 
@@ -129,8 +131,9 @@ xtrain_list = []
 for fname in filelist_trainx[:13]:
     
     # Reading the image
-    tif = TIFF.open(fname)
-    image = tif.read_image()
+    #tif = TIFF.open(fname)
+    #image = tif.read_image()
+    image = imread(fname)
     
     crop_size = 128
     
@@ -154,8 +157,9 @@ ytrain_list = []
 for fname in filelist_trainy[:13]:
     
     # Reading the image
-    tif = TIFF.open(fname)
-    image = tif.read_image()
+    #tif = TIFF.open(fname)
+    #image = tif.read_image()
+    image = imread(fname)
     
     crop_size = 128
     
@@ -182,8 +186,10 @@ x_train = np.asarray(xtrain_list)
 # Making array of all the training sat images as it is without any cropping
     
 # Reading the image
-tif = TIFF.open(filelist_trainx[13])
-image = tif.read_image()
+#tif = TIFF.open(filelist_trainx[13])
+#image = tif.read_image()
+image = imread(filelist_trainx[13])
+
     
 crop_size = 128
     
@@ -202,8 +208,9 @@ x_val = image
 # Making array of all the training gt images as it is without any cropping
 
 # Reading the image
-tif = TIFF.open(filelist_trainy[13])
-image = tif.read_image()
+#tif = TIFF.open(filelist_trainy[13])
+#image = tif.read_image()
+image = imread(filelist_trainy[13])
     
 crop_size = 128
     
@@ -226,8 +233,9 @@ xtest_list1 = []
 for fname in filelist_testx:
     
     # Reading the image
-    tif = TIFF.open(fname)
-    image = tif.read_image()
+    #tif = TIFF.open(fname)
+    #image = tif.read_image()
+    image = imread(fname)
     
     crop_size = 128
     
@@ -250,8 +258,9 @@ trainx_list = []
 for fname in filelist_trainx[:13]:
     
     # Reading the image
-    tif = TIFF.open(fname)
-    image = tif.read_image()
+    #tif = TIFF.open(fname)
+    #image = tif.read_image()
+    image = imread(fname)
     
     # Padding as required and cropping
     crops_list = crops(image)
@@ -268,8 +277,9 @@ trainy_list = []
 for fname in filelist_trainy[:13]:
     
     # Reading the image
-    tif = TIFF.open(fname)
-    image = tif.read_image()
+    #tif = TIFF.open(fname)
+    #image = tif.read_image()
+    image = imread(fname)
     
     # Padding as required and cropping
     crops_list =crops(image)
@@ -286,8 +296,11 @@ testx_list = []
 #for fname in filelist_trainx[13]:
     
     # Reading the image
-tif = TIFF.open(filelist_trainx[13])
-image = tif.read_image()
+
+# Reading the image
+#tif = TIFF.open(filelist_trainx[13])
+#image = tif.read_image()
+image = imread(filelist_trainx[13])
     
 # Padding as required and cropping
 crops_list = crops(image)
@@ -304,8 +317,9 @@ testy_list = []
 #for fname in filelist_trainx[13]:
     
 # Reading the image
-tif = TIFF.open(filelist_trainy[13])
-image = tif.read_image()
+#tif = TIFF.open(filelist_trainy[13])
+#image = tif.read_image()
+image = imread(filelist_trainy[13])
     
 # Padding as required and cropping
 crops_list = crops(image)
@@ -714,8 +728,9 @@ for i_ in range(len(xtrain_list)):
     
     y_pred_train_img = onehot_to_rgb(img, color_dict)
 
-    tif = TIFF.open(filelist_trainx[i_])
-    image2 = tif.read_image()
+    #tif = TIFF.open(filelist_trainx[i_])
+    #image2 = tif.read_image()
+    image2 = imread(filelist_trainx[i_])
     
     h,w,c = image2.shape
     
@@ -759,8 +774,9 @@ for i_ in range(len(xtest_list1)):
     
     y_pred_test_img = onehot_to_rgb(img, color_dict)
 
-    tif = TIFF.open(filelist_testx[i_])
-    image2 = tif.read_image()
+    image2 = imread(filelist_testx[i_])
+    #tif = TIFF.open(filelist_testx[i_])
+    #image2 = tif.read_image()
     
     h,w,c = image2.shape
     
