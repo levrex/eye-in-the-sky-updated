@@ -18,6 +18,7 @@ from keras.optimizers import *
 from keras.callbacks import ModelCheckpoint, LearningRateScheduler
 from keras.preprocessing.image import ImageDataGenerator
 from keras import backend as keras
+from tensorflow.keras.optimizers import Adam
 #%matplotlib inline
 
 
